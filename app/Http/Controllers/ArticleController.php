@@ -32,7 +32,7 @@ class ArticleController extends Controller
                 return response()->json($validator->errors(), 400);
             }
     
-            $comment = Comment::create([
+            $comment = Article::create([
                 'titre' => $request->titre,
                 'contenu' => $request->contenu,
             ]);
@@ -60,7 +60,7 @@ class ArticleController extends Controller
             $article = Article::findOrFail($id);
             $article->delete();
     
-            return 204;
+            return [$article,"article deleted"];
         }
 
 

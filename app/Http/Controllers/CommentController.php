@@ -46,7 +46,7 @@ class CommentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'contenu' => 'required|string',
-            'article_id' => 'required|exists:articles,id',
+            
         ]);
 
         if ($validator->fails()) {
@@ -59,7 +59,6 @@ class CommentController extends Controller
         }
 
         $comment->contenu = $request->contenu;
-        $comment->article_id = $request->article_id;
         $comment->save();
 
         return response()->json(['message' => 'Comment updated successfully', 'comment' => $comment]);
@@ -74,7 +73,7 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        return response()->json(['message' => 'Comment deleted successfully']);
+        return response()->json(['message' => 'Comment deleted successfully','data'=> $comment]);
     }
 
 }
