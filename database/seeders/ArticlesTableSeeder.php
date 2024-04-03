@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Faker\Factory;
 use App\Models\Article;
+use App\Models\Comment;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -17,9 +18,17 @@ class ArticlesTableSeeder extends Seeder
         Article::truncate();
 
         $faker = Factory::create();
-            Article::factory(10)->create([
+            $articles=Article::factory(10)->create([
+
                 'titre' => $faker->sentence,
                 'contenu' => $faker->paragraph,
             ]);
+            foreach ($articles as $article) {
+                Comment::factory(10)->create([
+                    'contenu' => $faker->paragraph,
+                    'article_id'=>$article->id,
+                ]);
+            }
+           
     }
 }

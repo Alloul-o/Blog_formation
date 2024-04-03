@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
-use OpenApi\Annotations as OA;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
@@ -12,12 +11,26 @@ class ArticleController extends Controller
      
         public function index()
         {
-            return Article::all();
+            // a revoir
+            $data =Article::all();
+            if ($data) {
+                return response()->json($data, 200, );
+            }else {
+                return response()->json(['message'=>'articles_not_found'],400 );
+            }
+           
+            
         }
       
         public function show($id)
         {
-            return Article::find($id);
+            $data =Article::find($id);
+            if ($data) {
+                return response()->json($data, 200, );
+            }else {
+                return response()->json(['message'=>'article_not_found'],400 );
+            }
+            
         }
 
     
@@ -42,8 +55,8 @@ class ArticleController extends Controller
         public function update(Request $request, $id)
         {
             $validator = Validator::make($request->all(), [
-                'titre' => 'required',
-                'contenu' => 'required',
+                'titre' => 'string',
+                'contenu' => 'string',
             ]);
     
             if ($validator->fails()) {
@@ -57,18 +70,25 @@ class ArticleController extends Controller
    
         public function delete(Request $request, $id)
         {
-            $article = Article::findOrFail($id);
-            $article->delete();
-    
-            return [$article,"article deleted"];
+            $article = Article::find($id);
+            $data =Article::find($id);
+            if ($article) {
+                $article->delete();
+                return response()->json(['message'=>'article_deleted'], 200, );
+            }else {
+                return response()->json(['message'=>'article_not_found'],400 );
+            }
         }
 
 
         public function GetCommentsOfArticle(Request $request,$id)
         {
-            
-            return Article::with('comment')->find($id);
+            $data =Article::with('comment')->find($id);
+            if ($data) {
+                return response()->json($data, 200, );
+            }else {
+                return response()->json(['message'=>'article_not_found'],400 );
+            }
         }
-    
     
 }

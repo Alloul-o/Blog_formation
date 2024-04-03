@@ -10,8 +10,12 @@ class CommentController extends Controller
 {
     public function index()
     {
-        return $comments = Comment::all();
-        
+        $data = Comment::all();
+        if ($data) {
+            return response()->json($data, 200, );
+        }else {
+            return response()->json(['message'=>'comment_not_found'],400 );
+        }
     }
 
     public function store(Request $request)
@@ -30,16 +34,18 @@ class CommentController extends Controller
             'article_id' => $request->article_id,
         ]);
 
-        return response()->json(['message' => 'Comment created successfully', 'comment' => $comment], 201);
+        return response()->json(['message' => 'Comment_created_successfully', 'comment' => $comment], 201);
     
     }
     public function show($id)
     {
-        $comment = Comment::find($id);
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found'], 404);
+        $data = Comment::find($id);
+        if ($data) {
+            return response()->json($data, 200, );
+        }else {
+            return response()->json(['message'=>'comment_not_found'],400 );
         }
-        return response()->json($comment);
+       
     }
 
     public function update(Request $request, $id)
@@ -55,7 +61,7 @@ class CommentController extends Controller
 
         $comment = Comment::find($id);
         if (!$comment) {
-            return response()->json(['message' => 'Comment not found'], 404);
+            return response()->json(['message' => 'Comment_not_found'], 404);
         }
 
         $comment->contenu = $request->contenu;
@@ -68,12 +74,12 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
         if (!$comment) {
-            return response()->json(['message' => 'Comment not found'], 404);
+            return response()->json(['message' => 'Comment_not_found'], 404);
         }
 
         $comment->delete();
 
-        return response()->json(['message' => 'Comment deleted successfully','data'=> $comment]);
+        return response()->json(['message' => 'Comment_deleted_successfully','data'=> $comment]);
     }
 
 }
