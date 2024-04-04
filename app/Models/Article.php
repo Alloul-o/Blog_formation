@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Article extends Model
 {
-    protected $fillable = ['titre', 'contenu'];
+    protected $fillable = ['title', 'content','publication_date','tag_id','category_id'];
     use HasFactory;
     public function comment(){
         return $this->hasMany(Comment::class);
+    }
+    public function tag(){
+        return $this->hasMany(Tag::class);
+    }
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 }

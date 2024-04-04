@@ -14,11 +14,11 @@ class CommentsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Comment::truncate();
+        // Comment::truncate();
 
-        $faker = Factory::create();
-            Comment::factory(10)->create([
-                'contenu' => $faker->paragraph,
-            ]);
+        // $faker = Factory::create();
+        //     Comment::factory(10)->create([
+        //         'body' => $faker->paragraph,
+        //     ]);
     }
 }

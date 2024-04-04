@@ -21,7 +21,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'contenu' => 'required|string',
+            'body' => 'required|string',
             'article_id' => 'required|exists:articles,id',
         ]);
 
@@ -30,7 +30,7 @@ class CommentController extends Controller
         }
 
         $comment = Comment::create([
-            'contenu' => $request->contenu,
+            'body' => $request->body,
             'article_id' => $request->article_id,
         ]);
 
@@ -51,7 +51,7 @@ class CommentController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'contenu' => 'required|string',
+            'body' => 'required|string',
             
         ]);
 
@@ -75,9 +75,11 @@ class CommentController extends Controller
         $comment = Comment::find($id);
         if (!$comment) {
             return response()->json(['message' => 'Comment_not_found'], 404);
+        }else {
+            $comment->delete();
         }
 
-        $comment->delete();
+        
 
         return response()->json(['message' => 'Comment_deleted_successfully','data'=> $comment]);
     }

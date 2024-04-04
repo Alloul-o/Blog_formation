@@ -19,8 +19,9 @@ class ArticleFactory extends Factory
     {
         
         return [
-            'titre' => fake()->sentence,
-            'contenu' => fake()->paragraph,
+            'title' => fake()->sentence,
+            'content' => fake()->paragraph,
+            'publication_date'=>fake()->date('y-m-d')
         ];
     }
 }

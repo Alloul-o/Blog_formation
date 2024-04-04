@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,35 +38,52 @@ class ArticleController extends Controller
         public function store(Request $request)
         {
             $validator = Validator::make($request->all(), [
-                'titre' => 'required',
-                'contenu' => 'required',
+                'title' => 'required',
+                'content' => 'required',
+                'publication_date'=>'required',
+                'name_category'=>'required',
             ]);
     
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 400);
             }
-    
-            $comment = Article::create([
-                'titre' => $request->titre,
-                'contenu' => $request->contenu,
+
+            $article = Article::create([
+                'title' => $request->title,
+                'content' => $request->content,
+                'publication_date'=>$request->publication_date
             ]);
-            return  response()->json($comment, 200, );
+
+            $category=Category::create([
+                'name_category' => $request->name_category,
+                'article_id' => $article->id
+            ]);
+            
+            $article->category()->associate($category)->save();
+
+            // Load the category  with the article
+            $article->load('category');
+            return  response()->json($article, 200, );
         }
         
         public function update(Request $request, $id)
         {
             $validator = Validator::make($request->all(), [
-                'titre' => 'string',
-                'contenu' => 'string',
+                'title' => 'string',
+                'content' => 'string',
+                'publication_date'=>'string',
             ]);
     
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 400);
             }
-            $article = Article::findOrFail($id);
-            $article->update($request->all());
-    
-            return $article;
+            $article = Article::find($id);
+            if ($article) {
+                $article->update($request->all());
+                return response()->json($article, 200, );
+            }else {
+                return response()->json(['message'=>'article_not_found'],400 );
+            }
         }
    
         public function delete(Request $request, $id)
@@ -83,7 +101,7 @@ class ArticleController extends Controller
 
         public function GetCommentsOfArticle(Request $request,$id)
         {
-            $data =Article::with('comment')->find($id);
+            $data =Article::with('comment','tag','category')->find($id);
             if ($data) {
                 return response()->json($data, 200, );
             }else {

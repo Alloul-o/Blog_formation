@@ -6,10 +6,10 @@ use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Comment extends Model
+class Tag extends Model
 {
-    protected $fillable = ['body'];
     use HasFactory;
+    protected $fillable = ['name_tag','article_id'];
     public function article(){
         return $this->belongsTo(Article::class);
     }
