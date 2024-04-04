@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:user');
+    }
     public function index()
     {
         $data = Comment::all();
@@ -64,7 +68,7 @@ class CommentController extends Controller
             return response()->json(['message' => 'Comment_not_found'], 404);
         }
 
-        $comment->contenu = $request->contenu;
+        $comment->body = $request->body;
         $comment->save();
 
         return response()->json(['message' => 'Comment updated successfully', 'comment' => $comment]);

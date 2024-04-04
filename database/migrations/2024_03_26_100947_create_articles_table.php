@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->date('publication_date');
-            $table->foreignId('category_id')->references('id')->on('categories');
-            $table->foreignId('tag_id')->references('id')->on('tags');
+            $table->foreignId('category_id')->nullable();
+            $table->foreignId('tag_id')->nullable();
             $table->timestamps();
         });
     }

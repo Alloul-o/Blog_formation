@@ -14,7 +14,7 @@ class Article extends Model
         return $this->hasMany(Comment::class);
     }
     public function tag(){
-        return $this->hasMany(Tag::class);
+        return $this->belongsTo(Tag::class);
     }
     public function category(){
         return $this->belongsTo(Category::class);

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
 {
-    protected $fillable = ['body'];
+    protected $fillable = ['body','article_id'];
     use HasFactory;
     public function article(){
         return $this->belongsTo(Article::class);
