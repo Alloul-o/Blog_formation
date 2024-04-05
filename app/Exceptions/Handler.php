@@ -3,10 +3,12 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -41,8 +43,12 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (UnauthorizedException $e, $request) {
+            return response()->json([
+                'responseMessage' => $e->getMessage(),
+                'responseStatus'  => 403,
+            ]);
         });
     }
+    
 }

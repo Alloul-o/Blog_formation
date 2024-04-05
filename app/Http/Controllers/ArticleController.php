@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Validator;
 class ArticleController extends Controller
 {
      
-        public function __construct()
-        {
-            $this->middleware('role:admin');
-        }
         public function index()
         {
             // a revoir
